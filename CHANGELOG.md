@@ -9,6 +9,17 @@ from the template (issue #184).
 
 Newest first.
 
+## 0.0.61 (2026-09-12)
+
+- Align requirements, GitHub and GitLab publishing workflows, and the supported
+  toolchain record with Prodockit 0.65.2 and Zensical 0.0.61.
+- Carry the patched MathJax XML dependency (`@xmldom/xmldom` 0.9.12), retaining
+  MathJax 3.2.2 and keeping diagrams and mathematical notation enabled.
+- Include the latest installation recovery, configuration validation and
+  template-release selection fixes through the coordinated Prodockit update.
+- Document the Zensical upgrade considerations and the known upstream Mike
+  version-selector limitation accepted during release qualification.
+
 ## 0.0.60 (2026-09-09)
 
 - Raise the coordinated Prodockit floor to 0.63.0 in requirements, both CI
