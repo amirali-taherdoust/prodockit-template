@@ -26,6 +26,8 @@ owns = [
 [project]
 # Theirs. Never written after generation, never read for comparison.
 owns = [
+  # Component selections are project-specific; template-sync must preserve them.
+  ".prodockit-components.toml",
   "docs/*.md",
   "docs/**/*.md",
   "docs/assets/**",
