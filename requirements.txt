@@ -57,8 +57,8 @@ zensical>=0.0.61
 # >=0.61.6 installs the complete managed stylesheet and JavaScript cascade,
 # preserving cache-versioned registrations and the project's author files.
 # >=0.63.0 includes installer recovery and fresh-site configuration fixes.
-# >=0.65.2 pairs Zensical 0.0.61 with the qualified renderer and installation fixes.
-prodockit>=0.65.2
+# >=0.65.3 pairs Zensical 0.0.61 with the qualified renderer and installation fixes.
+prodockit>=0.65.3
 # PyMdown Extensions is a direct template build input: zensical.toml enables
 # its Markdown extensions. Keep the supported floor explicit even though
 # ProDockit also brings the package in transitively.

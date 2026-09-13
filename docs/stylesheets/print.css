@@ -50,12 +50,6 @@ pre {
     display: none !important;
 }
 
-/* The Governance decision table uses its first two rows as column headers.
-   Match the website's left-aligned header cells in the PDF. */
-#fig-architecture-decision-1 table th {
-    text-align: left !important;
-}
-
 /* A PDF has no light/dark toggle, so only the #only-light half of the
    cover page's hero graphic pair should ever appear there - the
    #only-dark half used to render right alongside it (both variants get

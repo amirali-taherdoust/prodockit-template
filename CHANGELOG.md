@@ -9,6 +9,20 @@ from the template (issue #184).
 
 Newest first.
 
+## 0.0.62 (2026-09-13)
+
+- Align the supported toolchain and both publishing workflows with Prodockit
+  0.65.3, retaining Zensical 0.0.61 and WeasyPrint 69.0.
+- Update the managed maths tools for browser-based website rendering checks
+  before PDF generation. Regenerate MathJax website assets after upgrading to
+  pick up the instant-navigation fix.
+- Remove the Governance table's temporary PDF alignment override: Prodockit
+  now supplies matching left-aligned headers and respects explicit alignment.
+- Correct Governance table rendering and placeholders, and use nested step
+  blocks in the numbered-steps example.
+- Treat component selections as project-owned so template updates preserve
+  each project's Mermaid and maths choices.
+
 ## 0.0.61 (2026-09-12)
 
 - Align requirements, GitHub and GitLab publishing workflows, and the supported
