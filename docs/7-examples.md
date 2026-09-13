@@ -107,18 +107,25 @@ which has to be redrawn every time a name changes.
 ## SubSection {: #steps-example }
 
 /// steps
-1. Write your Markdown.
 
-    Anything in `docs/` becomes a page of the website and a section of the
-    PDF.
+//// step | Write your Markdown
 
-2. Build it.
+Anything in `docs/` becomes a page of the website and a section of the PDF.
 
-    ```bash
-    zensical build
-    ```
+////
 
-3. Read what you wrote.
+//// step | Build it
+
+```bash
+zensical build
+```
+
+////
+
+//// step | Read what you wrote
+
+////
+
 ///
 
 Above is an example of numbered steps: a number to find your place by, room
