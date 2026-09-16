@@ -37,7 +37,7 @@ For anything beyond a small fix (typos, broken links), please open an issue firs
    curl -fsSL -o harvard-cite-them-right.csl "https://www.zotero.org/styles/harvard-cite-them-right"
    ```
 6. Preview the site locally: `zensical serve`.
-7. Make a clean website build with `zensical build --clean`. If your change touches PDF generation, Mermaid diagrams, or MathJax equations, also install the Node tooling (`npm ci` in `tools/mermaid/` and `tools/mathjax/`) and run `prodockit pdf` afterwards. The PDF command reads the completed site rather than building it itself. See [Install tooling](https://buckwem.github.io/prodockit-userguide/installtooling/) in the User Guide for the full setup.
+7. Make a clean website build with `zensical build --clean`. If your change touches PDF generation, Mermaid diagrams, or MathJax equations, run `prodockit init-tools --mathjax --force`, install the remaining MathJax Node tooling (`npm ci` in `tools/mathjax/`), and run `prodockit pdf` afterwards. Mermaid itself uses the Python renderer and needs no npm installation. The PDF command reads the completed site rather than building it itself. See [Install tooling](https://buckwem.github.io/prodockit-userguide/installtooling/) in the User Guide for the full setup.
 
 ## Making a change
 

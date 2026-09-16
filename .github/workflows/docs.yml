@@ -40,22 +40,9 @@ jobs:
       page_url: ${{ steps.deployment.outputs.page_url }}
       index_sha: ${{ steps.fingerprint.outputs.index_sha }}
     env:
-      # Only needed so `prodockit pdf` can pre-render ```mermaid fenced code
-      # blocks to static images via mermaid-cli/Puppeteer, and TeX math
-      # ($...$/$$...$$) to static images via mathjax-full (pure Node, no
-      # browser needed for that one) - WeasyPrint has no JS engine to run
-      # Mermaid.js/MathJax client-side like the live Zensical site does. Using
-      # the apt-installed Google Chrome below instead of Puppeteer's own
-      # bundled download avoids guessing at headless-Chrome shared-library
-      # package names.
-      #
-      # PUPPETEER_SKIP_DOWNLOAD, not the older
-      # PUPPETEER_SKIP_CHROMIUM_DOWNLOAD - Puppeteer renamed it, and
-      # mermaid-cli ^11.4.2 resolves to puppeteer 25.x, which only honours
-      # the new name. Under the old name the skip silently does nothing and
-      # a full Chrome build is downloaded on every run before falling back
-      # to the apt one below.
-      PUPPETEER_SKIP_DOWNLOAD: "true"
+      # MathJax verification renders the completed website through Puppeteer
+      # Core. Point it at the apt-installed Chrome below; Mermaid PDF rendering
+      # is Python-only and does not use this browser or any npm package.
       PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
       # Ubuntu's own "pandoc" apt package lags several major versions behind
       # upstream (3.1.3 on 24.04 at time of writing) - old enough that Markdown
@@ -150,33 +137,35 @@ jobs:
       - run: sudo apt update
         timeout-minutes: 8
       - run: sudo apt install -y google-chrome-stable
-      - run: npm ci --prefix tools/mermaid
+      # zensical and weasyprint pinned exactly here; prodockit to a floor.
+      #
+      # The two that decide *rendering* stay exact, because the site and the
+      # PDF are artifacts and should change when somebody decides they should:
+      # a new weasyprint repaginates, and those page numbers are resolved into
+      # the table of contents and the index; a new zensical redraws the site.
+      #
+      # prodockit is different. It is this project's own tooling rather than a
+      # third-party renderer, and a document generated from this template
+      # should pick up its fixes without waiting for the template to be
+      # updated and re-synced - a student writing over a term would otherwise
+      # sit on whatever release the template happened to name on the day they
+      # generated it. The floor guarantees the features this template uses
+      # exist; anything newer is welcome.
+      #
+      # prodockit itself is intentionally allowed to resolve to any
+      # compatible release in every build. `prodockit template-sync` warns
+      # an author when the activated project environment is behind.
+      #
+      # On top of requirements.txt's own floors. Managed together with
+      # `prodockit pins` (see CONTRIBUTING.md) rather than by hand - keep this
+      # in step with requirements.txt, and with the identical line in
+      # .gitlab-ci.yml. 0.66.0 is the coordinated release floor, with the
+      # Python Mermaid renderer enabled by default.
+      - run: pip install -r requirements.txt "zensical==0.0.61" "weasyprint==69.0" "prodockit>=0.66.0"
+      # Generate the version-matched MathJax manifest, lockfile and renderer
+      # before npm consumes them. Mermaid has no corresponding Node scaffold.
+      - run: prodockit init-tools --mathjax --force
       - run: npm ci --prefix tools/mathjax
-        # zensical and weasyprint pinned exactly here; prodockit to a floor.
-        #
-        # The two that decide *rendering* stay exact, because the site and the
-        # PDF are artifacts and should change when somebody decides they should:
-        # a new weasyprint repaginates, and those page numbers are resolved into
-        # the table of contents and the index; a new zensical redraws the site.
-        #
-        # prodockit is different. It is this project's own tooling rather than a
-        # third-party renderer, and a document generated from this template
-        # should pick up its fixes without waiting for the template to be
-        # updated and re-synced - a student writing over a term would otherwise
-        # sit on whatever release the template happened to name on the day they
-        # generated it. The floor guarantees the features this template uses
-        # exist; anything newer is welcome.
-        #
-        # prodockit itself is intentionally allowed to resolve to any
-        # compatible release in every build. `prodockit template-sync` warns
-        # an author when the activated project environment is behind.
-        #
-        # On top of requirements.txt's own floors. Managed together with
-        # `prodockit pins` (see CONTRIBUTING.md) rather than by hand - keep this
-        # in step with requirements.txt, and with the identical line in
-        # .gitlab-ci.yml. 0.65.3 is the coordinated release floor, with Adopt
-        # runtime provisioning and supported renderer/configuration alignment.
-      - run: pip install -r requirements.txt "zensical==0.0.61" "weasyprint==69.0" "prodockit>=0.65.3"
       # A generated project already has an applied-release stamp, written on
       # creation and changed only by a successful template-sync. The canonical
       # template repository is the pristine source rather than a generated
@@ -196,8 +185,7 @@ jobs:
       # extensions#276) - two copies of a config whose whole failure mode
       # is being subtly wrong, replaced by the one implementation both now
       # call (prodockit-extensions#298, issue #167). Needs `prodockit` on
-      # PATH, so this runs after the pip install above, not with the other
-      # npm ci step it pairs with.
+      # PATH, so this runs after the pip install and generated scaffold above.
       - run: prodockit init-mathjax
       # Diagnose the active environment, dependencies, resolved settings,
       # project inputs, managed files and configured renderers before spending

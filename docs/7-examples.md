@@ -80,7 +80,7 @@ graph LR
   B -->|No| D[Rendered as-is]
 ```
 
-Above is an example of a Mermaid diagram, defined with a ` ```mermaid ` fenced code block. The website renders it client-side via Mermaid.js; since WeasyPrint has no JS engine, the PDF instead pre-renders it to a static image at build time via the `tools/mermaid`/`tools/mathjax` Node tooling (see "Directory structure" in the User Guide's customise.md) - both from the exact same source, with no changes needed between the two.
+Above is an example of a Mermaid diagram, defined with a ` ```mermaid ` fenced code block. The website renders it client-side via Mermaid.js; since WeasyPrint has no JS engine, the PDF instead pre-renders it to a static image with ProDockit's Python renderer - both use the exact same source, with no changes needed between the two.
 
 ## SubSection {: #maths-example }
 
@@ -132,7 +132,7 @@ Above is an example of numbered steps: a number to find your place by, room
 for a command and its explanation, and a line joining one step to the next.
 Useful anywhere a method has to be repeatable by somebody else.
 
-Above is an example of a TeX equation, written with the same `$$...$$` syntax as Zensical's own MathJax support. The PDF pre-renders it to a static image the same way it does the diagram above, rather than showing the raw LaTeX source.
+Above is an example of a TeX equation, written with the same `$$...$$` syntax as Zensical's own MathJax support. The PDF pre-renders it to a static image with the separate MathJax tooling, rather than showing the raw LaTeX source.
 
 ## SubSection {: #code-example }
 
