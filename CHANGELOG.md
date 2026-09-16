@@ -9,7 +9,7 @@ from the template (issue #184).
 
 Newest first.
 
-## Unreleased
+## 0.0.63 (2026-09-16)
 
 - Make the Python Mermaid renderer the default and remove Mermaid's npm tooling
   while retaining the separate MathJax installation.
