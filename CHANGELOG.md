@@ -9,6 +9,13 @@ from the template (issue #184).
 
 Newest first.
 
+## Unreleased
+
+- Make the Python Mermaid renderer the default and remove Mermaid's npm tooling
+  while retaining the separate MathJax installation.
+- Align the toolchain and both publishing workflows with Prodockit 0.66.0,
+  including reproducible MathJax scaffold generation.
+
 ## 0.0.62 (2026-09-13)
 
 - Align the supported toolchain and both publishing workflows with Prodockit

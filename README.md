@@ -75,9 +75,9 @@ commands. See `.python-version` for the current required major/minor version.
 
 This produces `docs/site_documentation.pdf` and atomically adds the same file
 to the completed website. `prodockit pdf` does not run Zensical itself, so the
-website build must come first. Building Mermaid diagrams and maths to images
-also requires the Node tooling under `tools/mermaid/` and `tools/mathjax/`
-(`npm ci` in each) - see [Install tooling](https://buckwem.github.io/prodockit-userguide/installtooling/) in the User Guide for the full setup, and `.gitlab-ci.yml` / `.github/workflows/docs.yml` for how the CI pipelines do it.
+website build must come first. Mermaid diagrams use ProDockit's Python renderer
+without a separate installation. Maths still requires the Node tooling under
+`tools/mathjax/` (`npm ci`) - see [Install tooling](https://buckwem.github.io/prodockit-userguide/installtooling/) in the User Guide for the full setup, and `.gitlab-ci.yml` / `.github/workflows/docs.yml` for how the CI pipelines do it.
 
 ## Directory structure
 
@@ -86,7 +86,7 @@ also requires the Node tooling under `tools/mermaid/` and `tools/mathjax/`
 * `references.bib` - your bibliography source for `prodockit.bibliography` (see `docs/references.md`). Its citation style, `harvard-cite-them-right.csl`, isn't committed - fetch it with `curl -fsSL -o harvard-cite-them-right.csl "https://www.zotero.org/styles/harvard-cite-them-right"` before building (CI does this automatically).
 * `zensical.toml` - site configuration and navigation.
 * `macros.py` - build-time logic (Surrey detection, word count, repository link, heading numbering).
-* `tools/` - Node.js tooling used only by the PDF build (Mermaid, MathJax rendering).
+* `tools/` - Node.js tooling used by MathJax rendering; Mermaid uses ProDockit's Python renderer.
 
 See [Directory structure](https://buckwem.github.io/prodockit-userguide/customise/#directory-structure) in the User Guide's Customisation page for the complete, up-to-date map.
 

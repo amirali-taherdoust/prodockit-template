@@ -34,25 +34,9 @@
     # them between jobs. The cache key below also carries the Pandoc pin, so
     # moving that pin starts a fresh cache rather than serving stale inputs.
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-    # mermaid-cli drives Chrome through Puppeteer to rasterise diagrams.
-    # Point it at the apt-installed Chrome further down rather than letting
-    # Puppeteer download its own, and skip that download entirely.
-    #
-    # PUPPETEER_SKIP_DOWNLOAD, not the older
-    # PUPPETEER_SKIP_CHROMIUM_DOWNLOAD - Puppeteer renamed it, and
-    # mermaid-cli ^11.4.2 resolves to puppeteer 25.x, which honours only the
-    # new name. Under the old one the skip silently does nothing and a full
-    # Chrome build is downloaded on every run before being discarded in
-    # favour of PUPPETEER_EXECUTABLE_PATH anyway.
-    #
-    # Set here rather than as `export` lines in `script:` so they apply to
-    # the whole job regardless of step order - as exports they sat a few
-    # lines above `npm ci`, and reordering the script would have quietly
-    # reintroduced the problem.
-    PUPPETEER_SKIP_DOWNLOAD: "true"
-    # The job runs as root in its container. Route Puppeteer through a wrapper
-    # created below so Chrome receives the flags it requires in that context;
-    # this covers both `pdk diag` and the subsequent PDF build.
+    # MathJax verification renders the completed website through Puppeteer
+    # Core. The job runs as root, so route it through the wrapper created below
+    # to supply Chrome's required flags. Mermaid rendering is Python-only.
     PUPPETEER_EXECUTABLE_PATH: /usr/local/bin/prodockit-chrome
   cache:
     # CI_JOB_IMAGE is the resolved image name (`python:3.14` today), so both
@@ -80,11 +64,8 @@
     # substitutes a generic system font instead of erroring if they're
     # missing (see test_customisation.py's font-embedding check).
     - apt-get install -y texlive-xetex texlive-fonts-recommended texlive-plain-generic texlive-latex-extra fonts-inter fonts-jetbrains-mono
-    # Node + Chrome are only needed so `prodockit pdf` can pre-render
-    # ```mermaid fenced code blocks to static images via mermaid-cli/Puppeteer,
-    # and TeX math ($...$/$$...$$) to static images via mathjax-full (pure
-    # Node, no browser needed for that one) - WeasyPrint has no JS engine to
-    # run Mermaid.js/MathJax client-side like the live Zensical site does.
+    # Node + Chrome remain only for MathJax generation and website verification.
+    # Mermaid PDF rendering uses ProDockit's Python renderer.
     - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
     - apt-get install -y nodejs
     - curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
@@ -93,8 +74,6 @@
     - apt-get install -y google-chrome-stable
     - printf '%s\n' '#!/bin/sh' 'exec /usr/bin/google-chrome-stable --no-sandbox --disable-setuid-sandbox "$@"' > /usr/local/bin/prodockit-chrome
     - chmod +x /usr/local/bin/prodockit-chrome
-    - npm ci --prefix tools/mermaid
-    - npm ci --prefix tools/mathjax
     # zensical and weasyprint pinned exactly here; prodockit to a floor.
     #
     # The two that decide *rendering* stay exact - a new weasyprint
@@ -106,9 +85,13 @@
     #
     # See the identical line and its fuller comment in
     # .github/workflows/docs.yml. Keep both in step; managed together with
-    # `prodockit pins` (see CONTRIBUTING.md). 0.65.3 is the coordinated release
-    # floor, with Adopt runtime provisioning and renderer/configuration alignment.
-    - pip install -r requirements.txt "zensical==0.0.61" "weasyprint==69.0" "prodockit>=0.65.3"
+    # `prodockit pins` (see CONTRIBUTING.md). 0.66.0 is the coordinated release
+    # floor, with the Python Mermaid renderer enabled by default.
+    - pip install -r requirements.txt "zensical==0.0.61" "weasyprint==69.0" "prodockit>=0.66.0"
+    # Generate the version-matched MathJax files before npm consumes them.
+    # Mermaid has no corresponding Node scaffold.
+    - prodockit init-tools --mathjax --force
+    - npm ci --prefix tools/mathjax
     # The Surrey mirror is the canonical template's own deployment, not a
     # generated project. Record its reachable template tag in this disposable
     # checkout before rendering. Consumer projects retain the stamp written on
