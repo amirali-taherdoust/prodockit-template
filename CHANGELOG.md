@@ -9,9 +9,10 @@ from the template (issue #184).
 
 Newest first.
 
-## Unreleased
+## 0.0.66 (2026-09-20)
 
 - Cascade Prodockit 0.69.0 for strict Mermaid and table diagnostics and reliable shaded-rowspan PDF pagination.
+- Correct the malformed shading attribute in the solution-architecture risk table so strict builds pass.
 
 ## 0.0.65 (2026-09-20)
 
