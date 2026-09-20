@@ -9,6 +9,10 @@ from the template (issue #184).
 
 Newest first.
 
+## Unreleased
+
+- Cascade Prodockit 0.69.0 for strict Mermaid and table diagnostics and reliable shaded-rowspan PDF pagination.
+
 ## 0.0.65 (2026-09-20)
 
 - Cascade Prodockit 0.68.0 and defer PDF-only Python packages to `pdk pdf`, keeping Bootstrap and website-only environments lightweight (#290).
