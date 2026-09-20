@@ -2,10 +2,9 @@
 # SPDX-License-Identifier: MIT
 
 # File to list prerequisites for the project. This file is used by the CI/CD pipeline to install dependencies before building the documentation.
-# 0.0.61 is the coordinated Zensical floor used by Prodockit and its
-# documentation projects. Earlier floors were checked with website and PDF
-# output comparisons before being adopted.
-zensical>=0.0.61
+# Keep renderers at the exact versions validated by this Prodockit release so
+# a clean Bootstrap does not immediately need Adopt to reverse newer packages.
+zensical==0.0.61
 # A floor here and everywhere in CI: a project should receive compatible
 # prodockit fixes without waiting for the template to be updated and synced.
 # >=0.13.0 would be the true functional minimum (`prodockit
@@ -16,25 +15,12 @@ zensical>=0.0.61
 # manages the exact zensical/weasyprint pins and prodockit's floor below and
 # in CI together, rather than by hand across several files.
 #
-# 0.20.1 was a genuine functional minimum for *this* template rather than
-# a floor tracking the exact pin: the pipelines here pin PANDOC_VERSION
-# 3.10.1, and on that pandoc every prodockit before 0.20.1 loses the
-# `<pre>` around each fenced code block - the block then reflows as
-# justified prose in the PDF while the build reports success
-# (prodockit-extensions#207). A project generated from this template
-# inherits the pandoc pin, so it inherits that floor with it.
-#
 # >=0.21.0 raised it again for the same reason as >=0.13.0/>=0.17.2 above:
 # `prodockit source-bundle` (this template's own Source PDF, see
 # CONTRIBUTING.md and the CI workflow files) does not exist before it -
 # `pdf_source_bundle`, the setting this template used to set in
 # zensical.toml, was removed the same release the command was added
 # (prodockit-extensions#212, prodockit-template#160).
-#
-# >=0.26.2 raises it once more: `prodockit init-mathjax` (issue #167)
-# replaces the heredoc that previously duplicated bootstrap's own MathJax
-# install in CI - two copies of a config whose failure mode is being
-# subtly wrong rather than broken outright (prodockit-extensions#276).
 #
 # >=0.49.1 carries the current canonical website and PDF stylesheet pair,
 # checks both managed files alongside dependency pins, and leaves extra.css
@@ -57,21 +43,17 @@ zensical>=0.0.61
 # >=0.61.6 installs the complete managed stylesheet and JavaScript cascade,
 # preserving cache-versioned registrations and the project's author files.
 # >=0.63.0 includes installer recovery and fresh-site configuration fixes.
-# >=0.66.0 makes Python the default Mermaid PDF renderer and removes the
-# template's Mermaid npm installation without changing MathJax yet.
-prodockit>=0.66.0
+# >=0.67.1 moves PDF policy into pdk-pdf.toml and makes pdk pdf responsible
+# for verified, project-local Pandoc, fonts, Mermaid and MathJax runtimes.
+prodockit>=0.67.1
 # PyMdown Extensions is a direct template build input: zensical.toml enables
-# its Markdown extensions. Keep the supported floor explicit even though
+# its Markdown extensions. Keep the supported version explicit even though
 # ProDockit also brings the package in transitively.
-pymdown-extensions>=11.0.2
+pymdown-extensions==11.0.2
 mkdocstrings-python
-pandoc
 toml
 types-toml
-# A floor here, same reasoning as zensical above - CI pins it exactly
-# instead (see docs.yml), since layout/pagination is the one thing this
-# project's own published PDF needs to hold still between builds.
-weasyprint>=69.0
+weasyprint==69.0
 beautifulsoup4
 emoji
 markdown==3.10.3

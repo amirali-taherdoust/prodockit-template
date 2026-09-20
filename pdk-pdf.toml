@@ -1,0 +1,53 @@
+schema_version = 1
+
+[document]
+copyright = 'Author: Mark Buckwell and contributors. Licensed under the MIT License.<br>Made with <a href="https://zensical.org/">Zensical</a> and <a href="https://prodockit.org/">prodockit</a>.'
+extra_css = [
+  "stylesheets/pdk-pdf.css",
+  "stylesheets/print.css",
+]
+page_size = "A4"
+double_sided = false
+
+[margins]
+top = "2cm"
+right = "2cm"
+bottom = "2.75cm"
+left = "2cm"
+inner = "2cm"
+outer = "2cm"
+
+[header_footer]
+font_size = "10pt"
+color = "#555555"
+divider_color = "#e2e8f0"
+
+[table_of_contents]
+include = true
+title = "Table of Contents"
+
+# Optional renderer overrides. Commented sections retain automatic,
+# content-triggered behaviour in the project-local cache.
+# [mathjax]
+# version = "latest"
+# location = "cache"
+# preload = true
+
+# [mermaid]
+# version = "supported"
+# location = "cache"
+# preload = true
+
+# Optional PDF runtime overrides. Commented sections use the Prodockit
+# release's supported defaults.
+# [weasyprint]
+# version = "supported"
+# location = "cache"
+
+# [pandoc]
+# version = "supported"
+# location = "cache"
+
+# [fonts]
+# version = "supported"
+# location = "cache"

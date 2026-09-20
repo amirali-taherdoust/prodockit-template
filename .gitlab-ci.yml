@@ -22,58 +22,27 @@
     # PDF revision dates need the complete history rather than GitLab's
     # default shallow clone.
     GIT_DEPTH: "0"
-    # The base image's own "pandoc" apt package lags several major versions
-    # behind upstream - old enough that Markdown can parse differently than
-    # on a contributor's own dev machine.
-    # Installing a specific upstream .deb release below instead of
-    # "apt-get install pandoc" keeps CI and local dev on the same version,
-    # rather than silently drifting whenever the base image's own package
-    # updates. Keep in sync with .github/workflows/docs.yml's PANDOC_VERSION.
-    PANDOC_VERSION: "3.10.1"
     # Keep pip downloads inside the project so GitLab's cache can preserve
-    # them between jobs. The cache key below also carries the Pandoc pin, so
-    # moving that pin starts a fresh cache rather than serving stale inputs.
+    # them between jobs.
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-    # MathJax verification renders the completed website through Puppeteer
-    # Core. The job runs as root, so route it through the wrapper created below
-    # to supply Chrome's required flags. Mermaid rendering is Python-only.
-    PUPPETEER_EXECUTABLE_PATH: /usr/local/bin/prodockit-chrome
   cache:
-    # CI_JOB_IMAGE is the resolved image name (`python:3.14` today), so both
-    # managed version pins participate in invalidating this cache.
-    key: "${CI_JOB_IMAGE}-pandoc-${PANDOC_VERSION}"
+    # Prodockit validates cached runtime metadata before use; policy changes
+    # receive a fresh cache with the coordinated release floor.
+    key: "${CI_JOB_IMAGE}-pdk-pdf-0.67.1"
     paths:
       - .cache/pip/
-      - .cache/pandoc/
+      - .prodockit/cache/pdf/
   script:
     - apt-get update
-    - apt-get install -y curl gnupg ca-certificates
-    # GitLab only restores paths below the checkout, so keep the Pandoc .deb
-    # there rather than /tmp. The retry remains for a new or evicted cache.
-    - mkdir -p .cache/pandoc
-    - test -f .cache/pandoc/pandoc.deb || curl -fsSL --retry 5 --retry-all-errors --retry-delay 5 --connect-timeout 20 -o .cache/pandoc/pandoc.deb "https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb"
-    - apt-get install -y ./.cache/pandoc/pandoc.deb
+    - apt-get install -y curl ca-certificates
     # prodockit.bibliography's citation style - not vendored (see
     # CONTRIBUTING.md's "Getting set up" and prodockit-userguide#97) - so
     # every build, including this one, fetches it fresh.
     - curl -fsSL -o harvard-cite-them-right.csl "https://www.zotero.org/styles/harvard-cite-them-right"
-    # fonts-inter/fonts-jetbrains-mono: this template's default fonts (see
-    # "Fonts" in the User Guide's customise.md) - the website loads them from Google Fonts at
-    # view time, but WeasyPrint has no such fallback for the PDF; it needs
-    # the font files actually installed to embed them, and silently
-    # substitutes a generic system font instead of erroring if they're
-    # missing (see test_customisation.py's font-embedding check).
-    - apt-get install -y texlive-xetex texlive-fonts-recommended texlive-plain-generic texlive-latex-extra fonts-inter fonts-jetbrains-mono
-    # Node + Chrome remain only for MathJax generation and website verification.
-    # Mermaid PDF rendering uses ProDockit's Python renderer.
+    # PDF maths invokes the verified MathJax 4 distribution through Node
+    # directly. No npm install or browser is involved.
     - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
     - apt-get install -y nodejs
-    - curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
-    - echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
-    - apt-get update
-    - apt-get install -y google-chrome-stable
-    - printf '%s\n' '#!/bin/sh' 'exec /usr/bin/google-chrome-stable --no-sandbox --disable-setuid-sandbox "$@"' > /usr/local/bin/prodockit-chrome
-    - chmod +x /usr/local/bin/prodockit-chrome
     # zensical and weasyprint pinned exactly here; prodockit to a floor.
     #
     # The two that decide *rendering* stay exact - a new weasyprint
@@ -85,28 +54,17 @@
     #
     # See the identical line and its fuller comment in
     # .github/workflows/docs.yml. Keep both in step; managed together with
-    # `prodockit pins` (see CONTRIBUTING.md). 0.66.0 is the coordinated release
-    # floor, with the Python Mermaid renderer enabled by default.
-    - pip install -r requirements.txt "zensical==0.0.61" "weasyprint==69.0" "prodockit>=0.66.0"
-    # Generate the version-matched MathJax files before npm consumes them.
-    # Mermaid has no corresponding Node scaffold.
-    - prodockit init-tools --mathjax --force
-    - npm ci --prefix tools/mathjax
+    # `prodockit pins` (see CONTRIBUTING.md). 0.67.1 is the coordinated floor.
+    - pip install -r requirements.txt "zensical==0.0.61" "weasyprint==69.0" "prodockit>=0.67.1"
     # The Surrey mirror is the canonical template's own deployment, not a
     # generated project. Record its reachable template tag in this disposable
     # checkout before rendering. Consumer projects retain the stamp written on
     # creation/template-sync and must never derive it from their own later tags.
     - if [ "$CI_PROJECT_PATH" = "mb0105/prodockit-template" ]; then pdk _record-template-release; fi
-    # MathJax for the website, from the npm install above - see the
-    # identical step's comment in .github/workflows/docs.yml. This job
-    # never had this step at all until now (issue #167 found it missing
-    # while replacing docs.yml's own version): zensical.toml's
-    # extra_javascript unconditionally references
-    # javascripts/mathjax.js/vendor/mathjax/tex-svg-full.js, so every page
-    # built here had a dangling script reference and showed raw TeX.
-    - prodockit init-mathjax
-    # Diagnose the environment and project after generating the MathJax inputs
-    # required by this configuration. Offline, read-only and content-neutral.
+    # Prepare and verify every runtime supported on this platform. Cached runs
+    # validate locally and do not repeat successful downloads.
+    - pdk pdf --prepare all
+    # Diagnose the prepared environment and project before rendering.
     - pdk diag
     # Was sync_repo_icon.py; now provided by prodockit itself (#128).
     - prodockit sync-repo

@@ -9,6 +9,10 @@ from the template (issue #184).
 
 Newest first.
 
+## Unreleased
+
+- Cascade Prodockit 0.67.1 PDF policy and project-local runtimes so clean Bootstrap and CI no longer call removed MathJax commands (#287).
+
 ## 0.0.63 (2026-09-16)
 
 - Make the Python Mermaid renderer the default and remove Mermaid's npm tooling

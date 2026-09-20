@@ -15,6 +15,7 @@ owns = [
   ".prodockit-shared-files.toml",
   ".python-version",
   "docs/javascripts/pdk.js",
+  "docs/javascripts/mathjax.js",
   "docs/stylesheets/pdk.css",
   "docs/stylesheets/pdk-pdf.css",
   "docs/stylesheets/template.css",
@@ -28,6 +29,8 @@ owns = [
 owns = [
   # Component selections are project-specific; template-sync must preserve them.
   ".prodockit-components.toml",
+  # PDF policy is seeded once and remains project-specific.
+  "pdk-pdf.toml",
   "docs/*.md",
   "docs/**/*.md",
   "docs/assets/**",
@@ -51,7 +54,7 @@ owns = [
 
 # Project-owned, but written once at generation rather than left to the
 # reader to invent. Never updated afterwards.
-seed = ["LICENSE.md", ".vale.ini", "docs/javascripts/extra.js"]
+seed = ["LICENSE.md", ".vale.ini", "docs/javascripts/extra.js", "pdk-pdf.toml"]
 
 # Ignored, and not shipped at all: `prodockit bootstrap` writes
 # `.vscode/settings.json` itself at stage 19, merging into whatever the
@@ -73,15 +76,7 @@ delegate = "prodockit pins"
 # Key-level merge against the working tree, not HEAD - a project's copy is
 # routinely modified and uncommitted. Add and update; never remove, because
 # a reader who switched an extension off has made a choice.
-take = ['project.markdown_extensions."prodockit.*"', "project.extra.pdf_*"]
-# Caught by `take` and deliberately excluded: these hold the project's own
-# content rather than its settings. `pdf_copyright` on a real assignment
-# reads "Author: 123456" against this template's "Author: Mark Buckwell and
-# contributors" - taking it would put the template author's name on
-# somebody else's report, which is the failure this whole tool exists to
-# prevent. Every other pdf_* key is a genuine setting: margins, page size,
-# header colours.
-never = ["project.extra.pdf_copyright"]
+take = ['project.markdown_extensions."prodockit.*"']
 
 [shared.requirements]
 # Delegated: `prodockit pins` already owns every version declaration here

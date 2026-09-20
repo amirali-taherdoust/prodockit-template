@@ -100,26 +100,14 @@ extra_css = [
 # Read more: https://zensical.org/docs/customization/#additional-javascript
 #extra_javascript = ["javascripts/extra.js"]
 #
-# Order is load-bearing. MathJax reads `window.MathJax` once at startup, so
-# its configuration has to be listed *before* the bundle - a config that
-# arrives afterwards is ignored, and the page shows raw TeX rather than an
-# equation (prodockit-extensions#263).
-#
-# Both MathJax entries are installed by `prodockit bootstrap` and ignored
-# by git: the bundle is third-party code and does not belong in your
-# repository, and it is copied out of tools/mathjax's own pinned install so
-# the website and the PDF typeset through byte-identical MathJax. Run
-# `prodockit bootstrap --apply` (or see the User Guide) before building the
-# site for the first time.
+# Website maths follows Zensical's MathJax configuration: the committed local
+# configuration must load before the browser runtime. PDF maths is separate;
+# `pdk pdf` downloads and verifies MathJax 4 in the project-local cache when
+# the document first uses it.
 extra_javascript = [
   "javascripts/pdk.js",
-  # Cache keys are intentional. A browser that saw the old config kept
-  # serving raw TeX even after the corrected generated file was deployed;
-  # these revisions make that change visible without asking every reader to
-  # clear all site data. Change the relevant key when either generated file
-  # changes again.
-  "javascripts/mathjax.js?v=config-2",
-  "javascripts/vendor/mathjax/tex-svg-full.js?v=3.2.2",
+  "javascripts/mathjax.js?v=config-3",
+  "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js",
   "javascripts/extra.js"
 ]
 
@@ -395,11 +383,6 @@ quote = "fontawesome/solid/quote-left"
 #link = "https://github.com/user/repo"
 
 [project.extra]
-# Stylesheet meant only for the PDF build (e.g. rules that would look wrong
-# on the live website) - concatenated after extra_css above, so it wins the
-# cascade against a same-specificity extra_css rule. Requires prodockit>=0.6.8.
-pdf_extra_css = ["stylesheets/pdk-pdf.css", "stylesheets/print.css"]
-
 # Set to false to turn off automatic sequential heading numbering (e.g. "7.2.1")
 # on both the website and the PDF build. When false, headings show as plain
 # text with no number prefix anywhere (content or sidebar).
@@ -425,69 +408,9 @@ reference_spacing_european = "-0.8em"  # gap between entries, "european" style
 reference_indent_global = "1.27cm"     # hanging indent on wrapped lines, "global" style
 reference_spacing_global = "2em"       # gap between entries, "global" style
 
-# The PDF's page size (see "Page size and margins" in customise.md). Accepts
-# any standard CSS page size (e.g. "letter", "legal", "A3") or explicit
-# dimensions (e.g. "21cm 29.7cm"), optionally followed by "landscape".
-# PDF-only, has no effect on the live site.
-pdf_page_size = "A4"
-
-# The PDF's page margins, one per side - each accepts any valid CSS length
-# (e.g. "2cm", "0.75in"). The running header/footer live inside this margin,
-# so shrinking a side also narrows the space available to them there. See
-# "Page size and margins" in customise.md. PDF-only, has no effect on the
-# live site.
-#
-# pdf_margin_bottom is deeper than the others: the two-line footer
-# (copyright + "Made with" credit) is top-aligned in this margin and grows
-# downward, so whatever the margin doesn't use is what's left before the
-# paper edge. At 2cm that left only 4.0mm - inside what most consumer/office
-# printers physically cannot print (commonly 5-6.4mm) - so the second line
-# would be clipped on paper even though the PDF itself is correct (issue
-# #151). 2.75cm measured at 11.5mm clearance here, comfortably past that
-# floor; prodockit-extensions' own default is 2.5cm (extensions#139), but
-# this project's footer text starts from a tighter baseline, so it needs
-# more than the same absolute bump to land in the same comfortable range.
-# If the footer ever gains a third line, re-measure - this doesn't scale
-# automatically.
-pdf_margin_top = "2cm"
-pdf_margin_right = "2cm"
-pdf_margin_bottom = "2.75cm"
-pdf_margin_left = "2cm"
-
-# The PDF's running header/footer text style (see "Page header"/"Page
-# footer" in customise.md). Each accepts any valid CSS value (e.g. "9pt",
-# "rgb(85, 85, 85)"). One setting each for header and footer together - PDF
-# only, has no effect on the live site.
-pdf_header_footer_font_size = "10pt"
-pdf_header_footer_color = "#555555"
-pdf_header_footer_divider_color = "#e2e8f0"
-
-# Overrides `copyright` above for the PDF's own running footer only - the
-# live website's copyright text is untouched either way. Repeats the same
-# text `copyright` has, plus one extra line crediting the PDF pipeline
-# itself, matching the same "Made with Zensical and prodockit" line the
-# live website's own footer already shows (see overrides/partials/
-# copyright.html). A real HTML fragment - a real <br> forces the line
-# break, and the two <a> links render as real, clickable links in the
-# PDF, not flattened to plain text - see prodockit-extensions' pdf.md
-# "Copyright text" docs. Removing just this one line falls back to a
-# plain `copyright`-only footer without touching the license text
-# itself. Requires prodockit>=0.9.0.
-pdf_copyright = 'Author: Mark Buckwell and contributors. Licensed under the MIT License.<br>Made with <a href="https://zensical.org/">Zensical</a> and <a href="https://buckwem.github.io/prodockit-extensions/">prodockit</a>.'
-
-
-# Generating a PDF bundle of the source (Markdown + zensical.toml) is now a
-# separate command, `prodockit source-bundle`, run alongside `prodockit pdf`
-# rather than a setting here - see CONTRIBUTING.md and the CI workflow
-# files. Requires prodockit>=0.21.0.
-
-# Explicit Prodockit website and PDF defaults, maintained by Adopt.
+# PDF-only layout, output and renderer policy lives in pdk-pdf.toml. Shared
+# website/PDF authoring choices remain here.
 website_heading_numbering = true
-pdf_double_sided = false
-pdf_margin_inner = "2cm"
-pdf_margin_outer = "2cm"
-pdf_include_table_of_contents = true
-pdf_table_of_contents_title = "Table of Contents"
 
 # ----------------------------------------------------------------------------
 # Python Extensions
@@ -557,7 +480,8 @@ custom_checkbox = true
 # attr_list-tagged table header cells; prodockit.index adds \index{Term}
 # markers for prodockit.pdf's own PDF-only back-of-book index (opt-in -
 # unset here, so marking a term doesn't turn the index page on by itself;
-# set pdf_include_index = true under [project.extra] to enable it). Unlike
+# set include = true under [project.markdown_extensions."prodockit.index"]
+# to enable it). Unlike
 # pymdownx/zensical's own namespaces, Zensical doesn't hoist a nested
 # "prodockit.headings" table into that dotted extension name, so these
 # need a quoted key instead - see
@@ -579,9 +503,8 @@ numbering = "continuous"
 # `zensical build`/`zensical serve`/`prodockit pdf` is run from - typically
 # the project root, where references.bib lives. harvard-cite-them-right.csl
 # isn't committed (see CONTRIBUTING.md's "Getting set up") - fetch it before
-# building. Requires Pandoc on PATH - unlike every other prodockit
-# extension, this one needs it even for the live website, not just the
-# PDF (see "Requirements" in prodockit.bibliography's own docs).
+# building. Prodockit prepares the verified project-local Pandoc runtime on
+# first bibliography or PDF use.
 bib_file = "references.bib"
 csl_style = "harvard-cite-them-right.csl"
 [project.markdown_extensions."prodockit.tables"]
