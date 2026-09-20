@@ -9,7 +9,7 @@ from the template (issue #184).
 
 Newest first.
 
-## Unreleased
+## 0.0.64 (2026-09-20)
 
 - Cascade Prodockit 0.67.1 PDF policy and project-local runtimes so clean Bootstrap and CI no longer call removed MathJax commands (#287).
 
