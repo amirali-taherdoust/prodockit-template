@@ -75,9 +75,12 @@ commands. See `.python-version` for the current required major/minor version.
 
 This produces `docs/site_documentation.pdf` and atomically adds the same file
 to the completed website. `prodockit pdf` does not run Zensical itself, so the
-website build must come first. Mermaid diagrams use ProDockit's Python renderer
-without a separate installation. Maths still requires the Node tooling under
-`tools/mathjax/` (`npm ci`) - see [Install tooling](https://buckwem.github.io/prodockit-userguide/installtooling/) in the User Guide for the full setup, and `.gitlab-ci.yml` / `.github/workflows/docs.yml` for how the CI pipelines do it.
+website build must come first. It downloads and verifies the project-local
+Pandoc, fonts, Mermaid and MathJax assets when the document first needs them.
+Mermaid needs no separate runtime; PDF maths needs Node.js but no npm install.
+Run `pdk pdf --prepare all` when you want to populate every supported cache in
+advance. See [Install tooling](https://buckwem.github.io/prodockit-userguide/installtooling/)
+in the User Guide for the full setup.
 
 ## Directory structure
 
@@ -85,8 +88,9 @@ without a separate installation. Maths still requires the Node tooling under
 * `docs/stylesheets/` - `extra.css` (website) and `print.css` (PDF) appearance.
 * `references.bib` - your bibliography source for `prodockit.bibliography` (see `docs/references.md`). Its citation style, `harvard-cite-them-right.csl`, isn't committed - fetch it with `curl -fsSL -o harvard-cite-them-right.csl "https://www.zotero.org/styles/harvard-cite-them-right"` before building (CI does this automatically).
 * `zensical.toml` - site configuration and navigation.
+* `pdk-pdf.toml` - PDF layout and project-local renderer/runtime policy.
 * `macros.py` - build-time logic (Surrey detection, word count, repository link, heading numbering).
-* `tools/` - Node.js tooling used by MathJax rendering; Mermaid uses ProDockit's Python renderer.
+* `tools/` - repository maintenance helpers; PDF runtimes are managed by Prodockit.
 
 See [Directory structure](https://buckwem.github.io/prodockit-userguide/customise/#directory-structure) in the User Guide's Customisation page for the complete, up-to-date map.
 
@@ -111,7 +115,7 @@ MIT - see [`LICENSE.md`](LICENSE.md).
 
 ### Zensical 0.0.61 compatibility
 
-This template pairs Zensical 0.0.61 with Prodockit 0.65.2. Keep requirements,
+This template pairs Zensical 0.0.61 with Prodockit 0.67.1. Keep requirements,
 publishing pins and `.prodockit-toolchain.toml` aligned when upgrading.
 Custom plugin options now receive stricter validation; table-reader data paths
 must remain inside the project. Website redirects are optional and do not

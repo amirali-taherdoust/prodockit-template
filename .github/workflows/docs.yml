@@ -39,18 +39,6 @@ jobs:
     outputs:
       page_url: ${{ steps.deployment.outputs.page_url }}
       index_sha: ${{ steps.fingerprint.outputs.index_sha }}
-    env:
-      # MathJax verification renders the completed website through Puppeteer
-      # Core. Point it at the apt-installed Chrome below; Mermaid PDF rendering
-      # is Python-only and does not use this browser or any npm package.
-      PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
-      # Ubuntu's own "pandoc" apt package lags several major versions behind
-      # upstream (3.1.3 on 24.04 at time of writing) - old enough that Markdown
-      # can parse differently than on a contributor's own dev machine.
-      # Installing a specific upstream .deb release below instead of
-      # "apt install pandoc" keeps CI and local dev on the same version,
-      # rather than silently drifting whenever Ubuntu's own package updates.
-      PANDOC_VERSION: "3.10.1"
     steps:
       # `enablement: true` creates the Pages site if it does not exist,
       # instead of failing with "Get Pages site failed" and leaving the
@@ -77,6 +65,8 @@ jobs:
           python-version-file: .python-version
       - uses: actions/setup-node@v4
         with:
+          # PDF maths invokes the verified MathJax 4 distribution through
+          # Node directly. No npm install or browser is involved.
           node-version: "22"
       # The image's mirrorlist puts `azure.archive.ubuntu.com` first. When
       # that host is down - it was, repeatedly, on 2026-08-18, holding
@@ -105,38 +95,18 @@ jobs:
           fi
       - run: sudo apt update
         timeout-minutes: 8
-      - run: sudo apt install -y curl gnupg ca-certificates
-      # Cache the pinned upstream package because its release CDN is otherwise
-      # on the critical path of every build. A version bump produces a fresh
-      # key; an unchanged pin avoids the network after the first successful
-      # download (issue #174, matching prodockit-extensions).
-      - id: pandoc-cache
+      - run: sudo apt install -y curl ca-certificates
+      # Prodockit owns verified project-local Pandoc, fonts, Mermaid and
+      # MathJax runtimes. A policy or dependency change starts a fresh cache.
+      - id: pdf-runtime-cache
         uses: actions/cache@v4
         with:
-          path: /tmp/pandoc.deb
-          key: pandoc-${{ env.PANDOC_VERSION }}-amd64-deb
-      # The retry remains for the first run on a new key and for an evicted
-      # cache: caching reduces the dependency but is not a guarantee.
-      - if: steps.pandoc-cache.outputs.cache-hit != 'true'
-        run: |
-          curl -fsSL --retry 5 --retry-all-errors --retry-delay 5 --connect-timeout 20 -o /tmp/pandoc.deb "https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb"
-      - run: sudo apt install -y /tmp/pandoc.deb
+          path: .prodockit/cache/pdf
+          key: pdk-pdf-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pdk-pdf.toml', 'requirements.txt') }}
       # prodockit.bibliography's citation style - not vendored (see
       # CONTRIBUTING.md's "Getting set up" and prodockit-userguide#97) - so
       # every build, including this one, fetches it fresh.
       - run: curl -fsSL -o harvard-cite-them-right.csl "https://www.zotero.org/styles/harvard-cite-them-right"
-      # fonts-inter/fonts-jetbrains-mono: this template's default fonts (see
-      # "Fonts" in the User Guide's customise.md) - the website loads them from Google Fonts
-      # at view time, but WeasyPrint has no such fallback for the PDF; it
-      # needs the font files actually installed to embed them, and silently
-      # substitutes a generic system font instead of erroring if they're
-      # missing (see test_customisation.py's font-embedding check).
-      - run: sudo apt install -y texlive-xetex texlive-fonts-recommended texlive-plain-generic texlive-latex-extra fonts-inter fonts-jetbrains-mono
-      - run: curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor | sudo tee /usr/share/keyrings/google-chrome.gpg > /dev/null
-      - run: echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-      - run: sudo apt update
-        timeout-minutes: 8
-      - run: sudo apt install -y google-chrome-stable
       # zensical and weasyprint pinned exactly here; prodockit to a floor.
       #
       # The two that decide *rendering* stay exact, because the site and the
@@ -159,13 +129,10 @@ jobs:
       # On top of requirements.txt's own floors. Managed together with
       # `prodockit pins` (see CONTRIBUTING.md) rather than by hand - keep this
       # in step with requirements.txt, and with the identical line in
-      # .gitlab-ci.yml. 0.66.0 is the coordinated release floor, with the
-      # Python Mermaid renderer enabled by default.
-      - run: pip install -r requirements.txt "zensical==0.0.61" "weasyprint==69.0" "prodockit>=0.66.0"
-      # Generate the version-matched MathJax manifest, lockfile and renderer
-      # before npm consumes them. Mermaid has no corresponding Node scaffold.
-      - run: prodockit init-tools --mathjax --force
-      - run: npm ci --prefix tools/mathjax
+      # .gitlab-ci.yml. 0.67.1 is the coordinated release floor; the exact
+      # third-party renderer pins also live in requirements.txt so Bootstrap
+      # and CI resolve the same tested combination.
+      - run: pip install -r requirements.txt "zensical==0.0.61" "weasyprint==69.0" "prodockit>=0.67.1"
       # A generated project already has an applied-release stamp, written on
       # creation and changed only by a successful template-sync. The canonical
       # template repository is the pristine source rather than a generated
@@ -175,22 +142,11 @@ jobs:
       - name: Record canonical template release
         if: github.repository == 'buckwem/prodockit-template'
         run: pdk _record-template-release
-      # MathJax for the *website*, from the npm install above. Neither file
-      # is committed - the bundle is third-party code, and both are
-      # written by `prodockit bootstrap` on a developer's machine - so CI
-      # has to install them the same way, exactly as it already fetches
-      # the CSL style above. Without this the site builds with a dangling
-      # script reference and shows raw TeX where an equation should be.
-      # Was a heredoc duplicating bootstrap's own stage 18 (prodockit-
-      # extensions#276) - two copies of a config whose whole failure mode
-      # is being subtly wrong, replaced by the one implementation both now
-      # call (prodockit-extensions#298, issue #167). Needs `prodockit` on
-      # PATH, so this runs after the pip install and generated scaffold above.
-      - run: prodockit init-mathjax
-      # Diagnose the active environment, dependencies, resolved settings,
-      # project inputs, managed files and configured renderers before spending
-      # time on either published output. Generated MathJax inputs must exist
-      # first. The default diagnostic is deterministic, offline and read-only.
+      # Exercise every platform-supported provider before rendering. This is
+      # a verified cache hit on subsequent runs and remains independent of npm.
+      - run: pdk pdf --prepare all
+      # Diagnose the active environment, dependencies, resolved settings and
+      # prepared project-local runtimes before spending time on either output.
       - run: pdk diag
       # Keeps repo_url/repo_name/edit_uri/brand icon and the README badge
       # row matching whichever remote this checkout is published from.

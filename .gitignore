@@ -8,16 +8,12 @@
 # Environments
 .venv
 .prodockit-quarantine/
+/.prodockit/cache/pdf/
 
 # Intermediate .mmd/.svg files prodockit.pdf.mermaid writes while pre-
 # rendering each ```mermaid fence for the PDF (see docs/section4.md's own
 # diagram) - not build output itself, just scratch space.
 docs/.prodockit-pdf-mermaid/
-
-# -----------------------------------------------------------------------------
-# Node (mathjax-full, used by `prodockit pdf` to pre-render TeX math)
-# -----------------------------------------------------------------------------
-tools/mathjax/node_modules
 
 # Artifacts
 /target
@@ -71,26 +67,13 @@ docs/*.pdf
 # Local Claude Code config (dev-preview launch config, personal permissions)
 .claude/
 
-# Installed by `prodockit bootstrap` - third-party code and generated
-# configuration, neither of which belongs in your repository. Copied from
-# tools/mathjax's pinned install so the site and the PDF typeset through
-# the same MathJax (prodockit-extensions#263).
-docs/javascripts/vendor/
-docs/javascripts/mathjax.js
-
-# Font files, if you keep any here. Inter and JetBrains Mono - the two the
-# PDF embeds - are installed on the machine rather than carried in the
-# repository, the same as the MathJax bundle above: they are somebody
-# else's files, often under licences that govern redistribution, and a
-# repository is redistribution (prodockit-template#164).
+# Font files, if you keep any here. Prodockit's verified Inter and JetBrains
+# Mono runtime is generated in the ignored project cache above.
 fonts/
 .prodockit-template.log
 
 # Your own answers to `prodockit bootstrap`.
 .pdk-bootstrap.toml
-
-# Installed by `prodockit adopt`
-tools/mathjax/node_modules/
 
 # Installed by `prodockit adopt`
 /.prodockit-adopt-backups/

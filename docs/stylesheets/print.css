@@ -44,8 +44,8 @@ pre {
 /* Marker for content meant only for the live website (e.g. the "Download
    PDF" button on the cover page) - mirrors .pdf-only in pdk.css.
    Shown normally on the website by default (print.css isn't loaded there -
-   see extra_css in zensical.toml), hidden here since print.css is only
-   ever read by the PDF build (via pdf_extra_css - see zensical.toml). */
+   see extra_css in zensical.toml), hidden here since pdk-pdf.toml loads
+   print.css only for the PDF build. */
 .web-only {
     display: none !important;
 }
