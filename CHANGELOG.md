@@ -9,7 +9,7 @@ from the template (issue #184).
 
 Newest first.
 
-## Unreleased
+## 0.0.65 (2026-09-20)
 
 - Cascade Prodockit 0.68.0 and defer PDF-only Python packages to `pdk pdf`, keeping Bootstrap and website-only environments lightweight (#290).
 
