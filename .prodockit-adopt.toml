@@ -1,0 +1,345 @@
+# Configuration review only. Delete this file to review settings again.
+# Software versions and runtime health are checked independently.
+schema = 1
+template_source = "bundled prodockit-template zensical.toml"
+template_sha256 = "9870001387aea7d4e0a49ba3bfd8de9f9f3a866e60c314a7cc1dcc647007a268"
+
+[[settings]]
+path = ["project", "copyright"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "edit_uri"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "extra", "heading_numbering"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "extra", "reference_indent_global"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "extra", "reference_spacing_european"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "extra", "reference_spacing_global"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "extra", "reference_style"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "extra", "website_heading_numbering"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "extra_css"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "extra_javascript"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "abbr"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "admonition"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "attr_list"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "def_list"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "footnotes"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "md_in_html"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "prodockit.bibliography", "bib_file"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "prodockit.bibliography", "csl_style"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "prodockit.glossary"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "prodockit.headings", "numbering"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "prodockit.index"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "prodockit.refs"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "prodockit.steps"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "prodockit.tables"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "prodockit.tree"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.arithmatex", "generic"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.betterem", "smart_enable"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.blocks.caption", "types"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.caret"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.details"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.emoji", "emoji_generator"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.emoji", "emoji_index"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.emoji", "options", "custom_icons"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.highlight", "anchor_linenums"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.highlight", "line_spans"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.highlight", "pygments_lang_class"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.inlinehilite"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.keys"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.magiclink"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.mark"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.smartsymbols"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.snippets"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.superfences", "custom_fences"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.tabbed", "alternate_style"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.tabbed", "combine_header_slug"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.tasklist", "custom_checkbox"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "pymdownx.tilde"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "tables"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "toc", "permalink"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "zensical.extensions.glightbox"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "zensical.extensions.macros", "module_name"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "markdown_extensions", "zensical.extensions.macros", "on_error_fail"]
+outcome = "already present"
+
+[[settings]]
+path = ["project", "nav"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "plugins", "mkdocstrings", "handlers", "python", "inventories"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "plugins", "mkdocstrings", "handlers", "python", "options", "docstring_style"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "plugins", "mkdocstrings", "handlers", "python", "options", "inherited_members"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "plugins", "mkdocstrings", "handlers", "python", "options", "show_source"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "plugins", "mkdocstrings", "handlers", "python", "paths"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "repo_name"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "repo_url"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "site_author"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "site_description"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "site_dir"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "site_name"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "site_url"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "custom_dir"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "features"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "admonition", "abstract"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "admonition", "bug"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "admonition", "danger"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "admonition", "example"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "admonition", "failure"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "admonition", "info"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "admonition", "note"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "admonition", "question"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "admonition", "quote"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "admonition", "success"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "admonition", "tip"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "admonition", "warning"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "edit"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "repo"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "icon", "view"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "language"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "logo"]
+outcome = "excluded"
+
+[[settings]]
+path = ["project", "theme", "palette"]
+outcome = "excluded"
