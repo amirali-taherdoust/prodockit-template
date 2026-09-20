@@ -26,15 +26,19 @@
     # them between jobs.
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
   cache:
-    # Prodockit validates cached runtime metadata before use; policy changes
-    # receive a fresh cache with the coordinated release floor.
-    key: "${CI_JOB_IMAGE}-pdk-pdf-0.67.1"
+    # Prodockit validates cached runtime metadata before use. Include the
+    # committed PDF policies so either kind of rendering change refreshes it.
+    key:
+      prefix: "${CI_JOB_IMAGE}-pdk-pdf-0.68.0"
+      files:
+        - pdk-pdf.toml
+        - pdf-requirements.txt
     paths:
       - .cache/pip/
       - .prodockit/cache/pdf/
   script:
     - apt-get update
-    - apt-get install -y curl ca-certificates
+    - apt-get install -y curl ca-certificates libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0
     # prodockit.bibliography's citation style - not vendored (see
     # CONTRIBUTING.md's "Getting set up" and prodockit-userguide#97) - so
     # every build, including this one, fetches it fresh.
@@ -43,19 +47,18 @@
     # directly. No npm install or browser is involved.
     - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
     - apt-get install -y nodejs
-    # zensical and weasyprint pinned exactly here; prodockit to a floor.
+    # Zensical is pinned exactly here; Prodockit remains a floor.
     #
-    # The two that decide *rendering* stay exact - a new weasyprint
-    # repaginates and a new zensical redraws, and the site and PDF are
-    # artifacts that should change when somebody decides they should.
+    # Zensical redraws the site, so it changes only after review. WeasyPrint
+    # is PDF-only and is prepared below from pdf-requirements.txt.
     # prodockit is this project's own tooling, and a document generated from
     # this template should pick up its fixes without waiting for the
     # template to be updated and re-synced.
     #
     # See the identical line and its fuller comment in
     # .github/workflows/docs.yml. Keep both in step; managed together with
-    # `prodockit pins` (see CONTRIBUTING.md). 0.67.1 is the coordinated floor.
-    - pip install -r requirements.txt "zensical==0.0.61" "weasyprint==69.0" "prodockit>=0.67.1"
+    # `prodockit pins` (see CONTRIBUTING.md). 0.68.0 is the coordinated floor.
+    - pip install -r requirements.txt
     # The Surrey mirror is the canonical template's own deployment, not a
     # generated project. Record its reachable template tag in this disposable
     # checkout before rendering. Consumer projects retain the stamp written on

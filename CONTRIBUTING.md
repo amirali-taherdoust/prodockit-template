@@ -39,8 +39,10 @@ For anything beyond a small fix (typos, broken links), please open an issue firs
    prepares its verified project-local Pandoc runtime automatically.
 6. Make a clean website build with `zensical build --clean`, then run
    `prodockit pdf` for PDF-affecting changes. The command downloads and verifies
-   the project-local fonts, Mermaid and MathJax assets it actually needs. PDF
-   maths requires Node.js, but no npm install or browser. Use
+   the project-local fonts, Mermaid and MathJax assets it actually needs and
+   installs `pdf-requirements.txt` on first PDF use. On macOS/Linux, install
+   Pango before building a PDF. PDF maths requires Node.js, but no npm install
+   or browser. Website-only work requires neither prerequisite. Use
    `pdk pdf --prepare all` to populate every supported cache in advance. The PDF
    command reads the completed site rather than building it itself. See
    [Install tooling](https://buckwem.github.io/prodockit-userguide/installtooling/)
@@ -91,8 +93,10 @@ cascade so new projects do not need an Adopt alignment immediately after
 Bootstrap.
 
 `requirements.txt`, `.github/workflows/docs.yml` and `.gitlab-ci.yml` pin
-`zensical` and `weasyprint` exactly. Those renderers decide the published
-appearance and pagination, so they move only after review. `prodockit` is a
+`zensical` exactly. `pdf-requirements.txt` separately declares a compatible
+WeasyPrint floor for macOS/Linux PDF use, while `.prodockit-toolchain.toml`
+records the tested baseline. Review PDF output before intentionally raising
+that floor because renderer changes can affect pagination. `prodockit` is a
 floor (`prodockit>=...`) everywhere: a project receives compatible fixes
 without waiting for a template update and sync.
 

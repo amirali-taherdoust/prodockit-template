@@ -29,8 +29,13 @@ owns = [
 owns = [
   # Component selections are project-specific; template-sync must preserve them.
   ".prodockit-components.toml",
+  # The generated project starts with the template settings already reviewed.
+  # Adopt extends this ledger only when later template releases add settings.
+  ".prodockit-adopt.toml",
   # PDF policy is seeded once and remains project-specific.
   "pdk-pdf.toml",
+  # PDF-only Python policy is likewise seeded once; pdk pdf owns preparation.
+  "pdf-requirements.txt",
   "docs/*.md",
   "docs/**/*.md",
   "docs/assets/**",
@@ -54,7 +59,7 @@ owns = [
 
 # Project-owned, but written once at generation rather than left to the
 # reader to invent. Never updated afterwards.
-seed = ["LICENSE.md", ".vale.ini", "docs/javascripts/extra.js", "pdk-pdf.toml"]
+seed = ["LICENSE.md", ".vale.ini", "docs/javascripts/extra.js", ".prodockit-adopt.toml", "pdk-pdf.toml", "pdf-requirements.txt"]
 
 # Ignored, and not shipped at all: `prodockit bootstrap` writes
 # `.vscode/settings.json` itself at stage 19, merging into whatever the

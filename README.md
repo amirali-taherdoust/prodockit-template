@@ -77,7 +77,10 @@ This produces `docs/site_documentation.pdf` and atomically adds the same file
 to the completed website. `prodockit pdf` does not run Zensical itself, so the
 website build must come first. It downloads and verifies the project-local
 Pandoc, fonts, Mermaid and MathJax assets when the document first needs them.
-Mermaid needs no separate runtime; PDF maths needs Node.js but no npm install.
+It also installs the packages in `pdf-requirements.txt` on first PDF use, so a
+website-only environment does not install WeasyPrint. Mermaid needs no separate
+runtime; macOS/Linux PDF output needs Pango, and PDF maths needs Node.js but no
+npm install.
 Run `pdk pdf --prepare all` when you want to populate every supported cache in
 advance. See [Install tooling](https://buckwem.github.io/prodockit-userguide/installtooling/)
 in the User Guide for the full setup.
@@ -89,6 +92,7 @@ in the User Guide for the full setup.
 * `references.bib` - your bibliography source for `prodockit.bibliography` (see `docs/references.md`). Its citation style, `harvard-cite-them-right.csl`, isn't committed - fetch it with `curl -fsSL -o harvard-cite-them-right.csl "https://www.zotero.org/styles/harvard-cite-them-right"` before building (CI does this automatically).
 * `zensical.toml` - site configuration and navigation.
 * `pdk-pdf.toml` - PDF layout and project-local renderer/runtime policy.
+* `pdf-requirements.txt` - Python packages prepared only when PDF output is used.
 * `macros.py` - build-time logic (Surrey detection, word count, repository link, heading numbering).
 * `tools/` - repository maintenance helpers; PDF runtimes are managed by Prodockit.
 

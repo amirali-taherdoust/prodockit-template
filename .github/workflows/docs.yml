@@ -95,24 +95,24 @@ jobs:
           fi
       - run: sudo apt update
         timeout-minutes: 8
-      - run: sudo apt install -y curl ca-certificates
+      - run: >-
+          sudo apt install -y curl ca-certificates
+          libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0
       # Prodockit owns verified project-local Pandoc, fonts, Mermaid and
       # MathJax runtimes. A policy or dependency change starts a fresh cache.
       - id: pdf-runtime-cache
         uses: actions/cache@v4
         with:
           path: .prodockit/cache/pdf
-          key: pdk-pdf-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pdk-pdf.toml', 'requirements.txt') }}
+          key: pdk-pdf-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pdk-pdf.toml', 'requirements.txt', 'pdf-requirements.txt') }}
       # prodockit.bibliography's citation style - not vendored (see
       # CONTRIBUTING.md's "Getting set up" and prodockit-userguide#97) - so
       # every build, including this one, fetches it fresh.
       - run: curl -fsSL -o harvard-cite-them-right.csl "https://www.zotero.org/styles/harvard-cite-them-right"
-      # zensical and weasyprint pinned exactly here; prodockit to a floor.
+      # Zensical is pinned exactly here; Prodockit remains a floor.
       #
-      # The two that decide *rendering* stay exact, because the site and the
-      # PDF are artifacts and should change when somebody decides they should:
-      # a new weasyprint repaginates, and those page numbers are resolved into
-      # the table of contents and the index; a new zensical redraws the site.
+      # Zensical redraws the site, so it changes only after review. WeasyPrint
+      # is PDF-only and is prepared below from pdf-requirements.txt.
       #
       # prodockit is different. It is this project's own tooling rather than a
       # third-party renderer, and a document generated from this template
@@ -128,11 +128,9 @@ jobs:
       #
       # On top of requirements.txt's own floors. Managed together with
       # `prodockit pins` (see CONTRIBUTING.md) rather than by hand - keep this
-      # in step with requirements.txt, and with the identical line in
-      # .gitlab-ci.yml. 0.67.1 is the coordinated release floor; the exact
-      # third-party renderer pins also live in requirements.txt so Bootstrap
-      # and CI resolve the same tested combination.
-      - run: pip install -r requirements.txt "zensical==0.0.61" "weasyprint==69.0" "prodockit>=0.67.1"
+      # in step with requirements.txt and the identical line in
+      # .gitlab-ci.yml. 0.68.0 is the coordinated release floor.
+      - run: pip install -r requirements.txt
       # A generated project already has an applied-release stamp, written on
       # creation and changed only by a successful template-sync. The canonical
       # template repository is the pristine source rather than a generated
