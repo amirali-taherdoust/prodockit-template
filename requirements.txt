@@ -43,9 +43,9 @@ zensical==0.0.61
 # >=0.61.6 installs the complete managed stylesheet and JavaScript cascade,
 # preserving cache-versioned registrations and the project's author files.
 # >=0.63.0 includes installer recovery and fresh-site configuration fixes.
-# >=0.68.0 also moves PDF-only Python packages out of this website/base
-# environment and lets pdk pdf prepare them transparently on first use.
-prodockit>=0.68.0
+# >=0.69.0 diagnoses malformed tables, fails on Mermaid render errors, and
+# keeps shaded rowspans intact when PDF tables cross a page boundary.
+prodockit>=0.69.0
 # PyMdown Extensions is a direct template build input: zensical.toml enables
 # its Markdown extensions. Keep the supported version explicit even though
 # ProDockit also brings the package in transitively.
