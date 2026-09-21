@@ -9,6 +9,10 @@ from the template (issue #184).
 
 Newest first.
 
+## 0.0.67 (2026-09-21)
+
+- Cascade Prodockit 0.70.0 for Windows ARM64 website builds and clearer optional PDF prerequisite recovery and verification.
+
 ## 0.0.66 (2026-09-20)
 
 - Cascade Prodockit 0.69.0 for strict Mermaid and table diagnostics and reliable shaded-rowspan PDF pagination.
