@@ -2,5 +2,5 @@
 schema = 1
 
 [components]
-mermaid = true
-maths = true
+mermaid = false
+maths = false
