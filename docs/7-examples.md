@@ -57,8 +57,10 @@ Above is an example of a captioned figure. The caption is automatically numbered
 | Figure captions | `/// figure-caption` | this section |
 | Table captions | `/// table-caption` | this table |
 | Cell shading {: shade="8%" } | `shade="8%"` or `shade="off"` | this table |
+{% if not is_surrey %}
 | Diagrams | ` ```mermaid ` fence | this section |
 | Maths | `$$...$$` | this section |
+{% endif %}
 | Directory trees | `/// tree` | this section |
 | Numbered steps | `/// steps` | this section |
 /// table-caption | <
@@ -70,6 +72,8 @@ Above is an example of a captioned table. Like a figure caption, it's automatica
 ### SubSubSection {: #section4-subsubsection-1 }
 
 ### SubSubSection {: #section4-subsubsection-2 }
+
+{% if not is_surrey %}
 
 ## SubSection {: #diagrams-example }
 
@@ -87,6 +91,13 @@ Above is an example of a Mermaid diagram, defined with a ` ```mermaid ` fenced c
 $$
 \cos x=\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k)!}x^{2k}
 $$
+
+Above is an example of a TeX equation, written with the same `$$...$$`
+syntax as Zensical's own MathJax support. The PDF pre-renders it to a static
+image with the separate MathJax tooling, rather than showing the raw LaTeX
+source.
+
+{% endif %}
 
 ## SubSection {: #tree-example }
 
@@ -131,8 +142,6 @@ zensical build
 Above is an example of numbered steps: a number to find your place by, room
 for a command and its explanation, and a line joining one step to the next.
 Useful anywhere a method has to be repeatable by somebody else.
-
-Above is an example of a TeX equation, written with the same `$$...$$` syntax as Zensical's own MathJax support. The PDF pre-renders it to a static image with the separate MathJax tooling, rather than showing the raw LaTeX source.
 
 ## SubSection {: #code-example }
 
