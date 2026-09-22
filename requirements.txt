@@ -4,7 +4,7 @@
 # File to list prerequisites for the project. This file is used by the CI/CD pipeline to install dependencies before building the documentation.
 # Keep renderers at the exact versions validated by this Prodockit release so
 # a clean Bootstrap does not immediately need Adopt to reverse newer packages.
-zensical==0.0.61
+zensical==0.0.63
 # A floor here and everywhere in CI: a project should receive compatible
 # prodockit fixes without waiting for the template to be updated and synced.
 # >=0.13.0 would be the true functional minimum (`prodockit
@@ -45,11 +45,13 @@ zensical==0.0.61
 # >=0.63.0 includes installer recovery and fresh-site configuration fixes.
 # >=0.70.0 supports citation-enabled website builds on Windows ARM64 and makes
 # optional PDF prerequisite failures and Bootstrap verification actionable.
-prodockit>=0.70.0
+# >=0.71.0 qualifies Zensical 0.0.63, WeasyPrint 70.0 and PyMdown Extensions
+# 12.0.1 together for website and PDF output.
+prodockit>=0.71.0
 # PyMdown Extensions is a direct template build input: zensical.toml enables
 # its Markdown extensions. Keep the supported version explicit even though
 # ProDockit also brings the package in transitively.
-pymdown-extensions==11.0.2
+pymdown-extensions==12.0.1
 mkdocstrings-python
 toml
 types-toml
