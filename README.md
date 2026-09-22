@@ -117,12 +117,8 @@ Contributions to the template itself are welcome - see [`CONTRIBUTING.md`](CONTR
 MIT - see [`LICENSE.md`](LICENSE.md).
 
 
-### Zensical 0.0.61 compatibility
+### Supported renderer versions
 
-This template pairs Zensical 0.0.61 with Prodockit 0.67.1. Keep requirements,
-publishing pins and `.prodockit-toolchain.toml` aligned when upgrading.
-Custom plugin options now receive stricter validation; table-reader data paths
-must remain inside the project. Website redirects are optional and do not
-implicitly create aliases in generated PDFs. Zensical 0.0.61 rejects Mike's
-`version_selector` option; projects using it need to retain their previous
-working version until that upstream limitation is resolved.
+This template pairs Prodockit 0.71.0 with Zensical 0.0.63, WeasyPrint 70.0
+and PyMdown Extensions 12.0.1. Keep `requirements.txt`,
+`pdf-requirements.txt` and `.prodockit-toolchain.toml` aligned when upgrading.

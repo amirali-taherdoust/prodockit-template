@@ -9,6 +9,12 @@ from the template (issue #184).
 
 Newest first.
 
+## 0.0.68 (2026-09-22)
+
+- Cascade the tested Prodockit 0.71.0 renderer combination: Zensical 0.0.63, WeasyPrint 70.0 and PyMdown Extensions 12.0.1.
+- Omit optional Mermaid and maths examples from Surrey output while retaining them for other sites.
+- Correct the executive-summary Prodockit link and the licence copyright statement.
+
 ## 0.0.67 (2026-09-21)
 
 - Cascade Prodockit 0.70.0 for Windows ARM64 website builds and clearer optional PDF prerequisite recovery and verification.
