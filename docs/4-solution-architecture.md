@@ -43,8 +43,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 | **Threat Target** {: .compact rowspan=2 } | **Attack Technique** {: rowspan=2 }  | **Threat Agent** {: rowspan=2 } | **Risk evaluation** {: colspan=4 width="26%" } |  |  |  | **Risk Mitigation** {: colspan=3 } |  |  | **Residual Risk** {: colspan=4 width="26%" } |  |  |  |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- | :--- | :---: | :---: | :---: | :---: |
-|  |  |  | **Likeli&shy;hood** {: .header shade="2%" } | **Tech. Impact** {: shade="2%" } | **Bus. Impact** {: shade="2%" } | **Overall Risk** {: shade="2%" }  | **Preventive** {: shade="2%" } | **Detective** {: shade="2%" } | **Corrective** {: shade="2%" } | **Likeli&shy;hood** {: shade="2%" } | **Tech. Impact** {: shade="2%" } | **Bus. Impact** {: shade="2%" } | **Overall Risk** {: shade="2%" } |  |
-| Investment Data | Privileged access to highly confidential investment data | Internal IT Staff | H | L | H | H | Encryption of sensitive data fields in database | Detect access from un&shy;authorised application<br>Detect changes in permissions<br>Detect large data download | Automated block on access from threat agent | L | H | H | VL |
+|  |  |  | **Likeli- hood** {: .header shade="2%" } | **Tech. Impact** {: shade="2%" } | **Bus. Impact** {: shade="2%" } | **Overall Risk** {: shade="2%" }  | **Preventive** {: shade="2%" } | **Detective** {: shade="2%" } | **Corrective** {: shade="2%" } | **Likelihood** {: shade="2%" } | **Tech. Impact** {: shade="2%" } | **Bus. Impact** {: shade="2%" } | **Overall Risk** {: shade="2%" } |  |
+| Investment Data | Privileged access to highly confidential investment data | Internal IT Staff | H | L | H | H | Encryption of sensitive data fields in database | Detect access from unauthorised application<br>Detect changes in permissions<br>Detect large data download | Automated block on access from threat agent | L | H | H | VL |
 /// table-caption  | <
     attrs: {id: tab-threat-risk-register}
 
