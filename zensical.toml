@@ -67,8 +67,8 @@ nav = [
     {"3. Requirements" = "3-requirements.md"},
     {"4. Solution Architecture" = "4-solution-architecture.md"},
     {"5. Governance" = "5-governance.md"},
-    {"5. Operations" = "6-operations.md"},
-    {"6. Examples DELETE" = "7-examples.md"}
+    {"6. Operations" = "6-operations.md"},
+    {"7. Examples DELETE" = "7-examples.md"}
   ]},
   {"Appendixes" = [
     {"Appendix A. Acronyms" = "acronyms.md"},
