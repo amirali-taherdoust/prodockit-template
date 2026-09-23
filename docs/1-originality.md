@@ -36,12 +36,11 @@ I agree that the University may submit my work to means of checking this, such a
 
 | Tool Used | Explain How Used | List Prompts | Justify Use |
 | -- | -- | -- | -- |
-|  Gemini AI 3.5 | Used to generate a list of actors for the system context diagram. | 1. List actors for interfaces to an internet store.<br> 2. Add those business and IT actors that support the application, infrastructure and cybersecurity. <br>3. Add the following list of actors: actor1, actor2, actor3. | Used to identify a comprehensive list of actors and reduce the risk of missing actors. |
-| Gemini AI 3.5 | Identify a typical interface for a payment system.  | 1. What sort of protocol and technology for the interface to the Visa payments system.  | Used to identify the payment gateway system actor interfaces to a system. |
+|  ChatGPT 5.5 | Used to generate a list of actors for the system context diagram. | 1. List actors for interfaces to an internet store.<br> 2. Add those business and IT actors that support the application, infrastructure and cybersecurity. <br>3. Add the following list of actors: actor1, actor2, actor3. | Used to identify a comprehensive list of actors and reduce the risk of missing actors. |
+| ChatGPT 5.5 | Identify a typical interface for a payment system.  | 1. What sort of protocol and technology for the interface to the Visa payments system.  | Used to identify the payment gateway system actor interfaces to a system. |
 |   |   |   |   |
 |   |   |   |   |
-|  Gemini AI | Improve explanations in the coursework. | 1. Improve the following description to make clearer in no more than two sentences:  *<paragraph\>* | Used to make the discussion clearer.  |
-| Quillbot | Improve overall grammar and writing style as I edit a complex paragraphs. | No prompts - I put into the grammar checker and sometimes use the Improve function. | Used to improve my grammar and writing style as I edit each paragraph. |
+|  ChatGPT 5.5 | Improve explanations in the coursework. | 1. Improve the following description to make clearer in no more than two sentences:  *<paragraph\>* | Used to make the discussion clearer.  |
 /// table-caption | <
 Statement on AI use example
 ///
