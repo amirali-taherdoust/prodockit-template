@@ -160,6 +160,8 @@ jobs:
       # by forks, clones and GitLab projects.
       - name: Build the reusable template website
         run: zensical build --clean --strict
+      - name: Check the Examples capability table
+        run: python tools/check_examples_table.py public/7-examples/index.html
       # Reads the completed reusable website, then atomically adds the PDF to
       # public/. It does not invoke Zensical or clean its output.
       - run: prodockit pdf

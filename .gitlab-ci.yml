@@ -74,6 +74,7 @@
     # Write the separate source download before the clean website build.
     - prodockit source-bundle
     - zensical build --clean --strict
+    - python tools/check_examples_table.py public/7-examples/index.html
     # Consume the completed website and atomically add the finished PDF to
     # public/ without another Zensical build.
     - prodockit pdf
