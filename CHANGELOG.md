@@ -9,6 +9,12 @@ from the template (issue #184).
 
 Newest first.
 
+## 0.0.69 (2026-09-23)
+
+- Cascade Prodockit 0.72.0: PDF setup now happens on first use, and compact risk-register cells wrap instead of overlapping.
+- Correct assignment navigation numbering and remove the duplicate non-functional requirements section.
+- Update the AI-use statement examples.
+
 ## 0.0.68 (2026-09-22)
 
 - Cascade the tested Prodockit 0.71.0 renderer combination: Zensical 0.0.63, WeasyPrint 70.0 and PyMdown Extensions 12.0.1.

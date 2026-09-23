@@ -47,7 +47,9 @@ zensical==0.0.63
 # optional PDF prerequisite failures and Bootstrap verification actionable.
 # >=0.71.0 qualifies Zensical 0.0.63, WeasyPrint 70.0 and PyMdown Extensions
 # 12.0.1 together for website and PDF output.
-prodockit>=0.71.0
+# >=0.72.0 prepares PDF project files on first `pdk pdf` use and keeps
+# compact PDF table text inside its cells.
+prodockit>=0.72.0
 # PyMdown Extensions is a direct template build input: zensical.toml enables
 # its Markdown extensions. Keep the supported version explicit even though
 # ProDockit also brings the package in transitively.
